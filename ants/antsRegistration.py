@@ -31,12 +31,11 @@ def registerImage(itk_moving,itk_fixed, store_to=None,type="affine",metric="MI",
         if not shutil.which("antsRegistration"):
             raise Exception("No executable file \"antsRegistration\" in PATH.")
 
-    '''
     has_LD_LIBRARY = "LD_LIBRARY_PATH" in os.environ
     if has_LD_LIBRARY:
         LD_LIBRARY_old = os.environ["LD_LIBRARY_PATH"]
-    os.environ["LD_LIBRARY_PATH"] = (os.environ["LD_LIBRARY_PATH"] + os.pathsep if has_LD_LIBRARY else "") + lib_dir
-    '''
+    if not has_ANTs:
+        os.environ["LD_LIBRARY_PATH"] = (os.environ["LD_LIBRARY_PATH"] + os.pathsep if has_LD_LIBRARY else "") + lib_dir
 
     has_NUMBERCORES = "ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS" in os.environ
     if has_NUMBERCORES:
@@ -134,8 +133,6 @@ def registerImage(itk_moving,itk_fixed, store_to=None,type="affine",metric="MI",
     else:
         raise Exception("Parameter speed must be from the list: accurate, normal, fast, debug")
 
-
-
     # metric
     if metric == "MI":
         reg.inputs.metric=["MI"]
@@ -178,12 +175,10 @@ def registerImage(itk_moving,itk_fixed, store_to=None,type="affine",metric="MI",
         else:
             del os.environ["PATH"]
 
-    '''
-    if has_LD_LIBRARY:
-        os.environ["LD_LIBRARY_PATH"] = LD_LIBRARY_old
-    else:
-        del os.environ["LD_LIBRARY_PATH"]
-    '''
+        if has_LD_LIBRARY:
+            os.environ["LD_LIBRARY_PATH"] = LD_LIBRARY_old
+        else:
+            del os.environ["LD_LIBRARY_PATH"]
 
     if has_NUMBERCORES:
         os.environ["ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS"] = NUMBERCORES_old

@@ -16,7 +16,7 @@ def registerImage(itk_moving,itk_fixed, store_to=None,type="affine",metric="MI",
     """
 
     # prepare environment / path
-    main_dir = os.path.dirname(__file__)
+    main_dir = os.path.abspath(os.path.dirname(__file__))
     path_dir = os.path.join(main_dir,"bin")
     lib_dir = os.path.join(main_dir,"lib")
     tmp_dir = os.path.join(main_dir,"ants_tmp")

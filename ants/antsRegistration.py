@@ -11,7 +11,7 @@ def registerImage(itk_moving,itk_fixed, store_to=None,type="affine",metric="MI",
     :param store_to: path to directory to store output, deletes tmp directory if defined
     :param type: string, "affine", "rigid", "deformable"
     :param metric: string "CC","MI"
-    :param speed: string, "accurate","normal","fast","debug"
+    :param speed: string, "accurate","better","normal","fast","debug"
     :param itk_InitialMovingAffTrf: itk Transform, moving
     :param itk_InitialFixedAffTrf: itk Transform, fixed
     """
@@ -107,6 +107,14 @@ def registerImage(itk_moving,itk_fixed, store_to=None,type="affine",metric="MI",
         reg.inputs.shrink_factors = [[8, 4, 3, 1]]
         reg.inputs.sigma_units = ['vox']
         reg.inputs.smoothing_sigmas = [[4, 3, 2, 1]]
+    elif speed == "better":
+        reg.inputs.number_of_iterations = ([[200, 100, 50,20]])
+        reg.inputs.convergence_threshold = [1.e-6]
+        reg.inputs.convergence_window_size = [10]
+
+        reg.inputs.shrink_factors = [[8, 4, 2, 1]]
+        reg.inputs.sigma_units = ['vox']
+        reg.inputs.smoothing_sigmas = [[4, 3, 2, 1]]
     elif speed == "normal":
         reg.inputs.number_of_iterations = ([[100, 50, 10]])
         reg.inputs.convergence_threshold = [1.e-6]
@@ -132,7 +140,7 @@ def registerImage(itk_moving,itk_fixed, store_to=None,type="affine",metric="MI",
         reg.inputs.sigma_units = ['vox']
         reg.inputs.smoothing_sigmas = [[3]]
     else:
-        raise Exception("Parameter speed must be from the list: accurate, normal, fast, debug")
+        raise Exception("Parameter speed must be from the list: accurate, better, normal, fast, debug")
 
     # metric
     if metric == "MI":

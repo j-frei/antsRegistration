@@ -1,4 +1,5 @@
 from nipype.interfaces.ants import Registration
+from distutils.spawn import find_executable
 import os, shutil
 import SimpleITK as sitk
 
@@ -22,13 +23,13 @@ def registerImage(itk_moving,itk_fixed, store_to=None,type="affine",metric="MI",
     tmp_dir = os.path.join(main_dir,"ants_tmp")
     cwd_old = os.getcwd()
 
-    has_ANTs = shutil.which("antsRegistration")
+    has_ANTs = bool(find_executable("antsRegistration"))
     has_PATH = "PATH" in os.environ
     if has_PATH:
         PATH_old = os.environ["PATH"]
     if not has_ANTs:
         os.environ["PATH"] = (os.environ["PATH"] + os.pathsep if has_PATH else "") + path_dir
-        if not shutil.which("antsRegistration"):
+        if not find_executable("antsRegistration"):
             raise Exception("No executable file \"antsRegistration\" in PATH.")
 
     has_LD_LIBRARY = "LD_LIBRARY_PATH" in os.environ
@@ -163,7 +164,7 @@ def registerImage(itk_moving,itk_fixed, store_to=None,type="affine",metric="MI",
         raise Exception("Parameter type must be from the list: affine, rigid, deformable")
 
     if verbose:
-        print("Using antsRegistration from: {}".format(shutil.which("antsRegistration")))
+        print("Using antsRegistration from: {}".format(find_executable("antsRegistration")))
         print("Executing: {}".format(reg.cmdline))
     # perform ants call (retrieve by reg.cmdline)
     reg.run()

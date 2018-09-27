@@ -6,7 +6,7 @@ from DataSets.OASIS1 import OASIS1
 
 def resampleImage(img, atlas, trf=None):
     resampler = sitk.ResampleImageFilter()
-    resampler.SetReferenceImage(img)
+    resampler.SetReferenceImage(atlas)
     resampler.SetOutputSpacing(atlas.GetSpacing())
     resampler.SetSize(atlas.GetSize())
     if trf:

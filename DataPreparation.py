@@ -35,7 +35,7 @@ def prepareDatasets():
                 # resample along atlas
                 vol_resampled = resampleImage(vol_aligned, atlas)
 
-                out = registerImage(vol_resampled, atlas)
+                out = registerImage(vol_resampled, atlas, speed="better")
                 # keys: out["transforms_out"] -> [path to trfs]
                 # keys: out["warpedMovingVolume"] -> [path to warpedVol]
                 # get transform mov->fix [0], not fix->mov [1]

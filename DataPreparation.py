@@ -3,6 +3,7 @@ import SimpleITK as sitk
 import os
 from ants.antsRegistration import registerImage
 from DataSets.OASIS1 import OASIS1
+from DataSets.OASIS3 import OASIS3
 
 def resampleImage(img, atlas, trf=None):
     resampler = sitk.ResampleImageFilter()
@@ -17,7 +18,7 @@ def prepareDatasets():
     atlas = sitk.ReadImage(os.path.join(os.path.dirname(__file__), "atlas", "atlas.nii.gz"))
     #storage_folder = "/data/johann/datasets_prepared"
     storage_folder = "/mnt/hdd1/datasets_prepared"
-    datasets = [OASIS1]
+    datasets = [OASIS1,OASIS3]
 
     for ds in datasets:
         current_dataset = ds()

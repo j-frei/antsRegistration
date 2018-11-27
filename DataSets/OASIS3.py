@@ -11,10 +11,10 @@ class OASIS3(DataSet):
 
         def subjectProperties(subj):
             props = {}
-            pattern = re.compile(r'OAS3[^_]*_MR_d(?P<id>[0-9]+)/anat(?P<anat>[0-9]+)')
-            oasis_id,anat_id = pattern.findall(subj)[0]
+            pattern = re.compile(r'OAS3(?P<id1>[0-9]+)_MR_d(?P<id2>[0-9]+)/anat(?P<anat>[0-9]+)')
+            oasis_id1,oasis_id2,anat_id = pattern.findall(subj)[0]
 
-            props['id'] = "{}-{}".format(str(oasis_id),str(anat_id))
+            props['id'] = "{}-{}-{}".format(str(oasis_id1),str(oasis_id2),str(anat_id))
             props['img'] = subj
             return props
 
